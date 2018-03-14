@@ -203,9 +203,11 @@ int main() {
   //int storeMe = _mm256_extract_epi32(result, 7);
   result = _mm256_insert_epi32(_mm256_slli_si256(result, 4), 100, 4);
   //int* f = (int*)&result;
-  //int g[] = {0,0,0,0,0,0,0,0,0};
+  int g[] = {1,2,3,4,5,6,7,8};
+  result = _mm256_load_si256(g);
+  f = (int*)&result;
   //int* h = (int*)g;
-  printf("mod %i\n",239%8);
+  //printf("mod %i\n",239%8);
   //printf("v0[7] %i\n",((int*)&v0)[7]);
   //printf("size __m256i %lu\n",sizeof(__m256i));
   //printf("size v4 %lu\n",sizeof(v4));
@@ -233,6 +235,6 @@ int main() {
 // _mm256_slli_epi32 shift left 32 bit IntrinsicsGuide
 // _mm256_srli_epi32 shift right, zeros
 
-__m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
-__m256i _mm256_load_si256 (__m256i const * mem_addr)
+//__m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+//__m256i _mm256_load_si256 (__m256i const * mem_addr)
 
