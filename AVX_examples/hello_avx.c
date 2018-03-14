@@ -11,35 +11,48 @@ Insert
 7) Recursive push all into next down
 8)      reset current
 
-git
-1) Search each row low to high, until not found
-2)  If found, return true
-3) else Recursize, go down
-  
 */
 struct AVXVec {
   struct AVXVec *child;
   __m256i **data;
-  int dataLength = 0; // The number of vectors in each row of data[]
-  int currentDataIndex = 0; // the current index in data[] that we can fill, always < 10
-  };
-  
-void storeValues() {
-  int list[8] = {0,0,0,0,0,0,0,0};
+  int dataLength; // The number of vectors in each row of data[]
+  int currentDataIndex; // the current index in data[] that we can fill, always < 10
+};
+
+void insertOneInteger(int *list, int value) {
   int i;
-  for (i = 0; i < 8; i++) {
+  for (i = 7; i >= 0; i--) {
+    if (value > list[i]) {
+      int temp = list[i];
+      list[i] = value;
+      value = temp;
+    }
+  }
+}
+
+void storeValues(struct AVXVec *destination) {
+  int list[8] = {0,0,0,0,0,0,0,0};
+  int i = 0;
+  while (i < 8) {
     int retrievedValue = 10+i*i;
-    insertOneInteger(list, retrievedValue);
+    if (0) {
+      // this is where we would get a value to return it to the client.
+    }
+    else {
+      insertOneInteger(list, retrievedValue);
+    }
+    i++;
   }
   __m256i output = _mm256_set_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
-  return output;
+  // push output into AVXvec
+  storeValues(destination);
 }
 
-void addData(AVXVec *head, ) {
+void addData(struct AVXVec *head, __m256i newData) {
 
 }
 
-int getValue(AVXVec *current, int value) {
+int getValue(struct AVXVec *current, int value) {
   if ((*current).dataLength == 0) {
     return 0;
   }
@@ -149,17 +162,6 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
       // but we don't do this if we are using the double sided approach
       // Other idea is to resort only when input[0][0][7] < input[0][1][7]
       // but we'd have to sort 2+ times and not take more than recent sorts 
-    }
-  }
-}
-
-void insertOneInteger(int *list, int value) {
-  int i;
-  for (i = 7; i >= 0; i--) {
-    if (value > list[i]) {
-      int temp = list[i];
-      list[i] = value;
-      value = temp;
     }
   }
 }
