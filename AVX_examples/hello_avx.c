@@ -4,11 +4,26 @@
 struct AVXVec {
   struct AVXVec *child;
   __m256i *data;
-  int dataLength; // The number of vectors in each row of data[]
-  int currentDataIndex; // the current index in data[] that we can fill, always < 10
+  int dataLength = 0; // The number of vectors in each row of data[]
+  int currentDataIndex = 0; // the current index in data[] that we can fill, always < 10
   };
 
-__m256i* simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
+__m256i getStoreValues() {
+  int list[8] = {0,0,0,0,0,0,0,0};
+  int i;
+  for (i = 0; i < 8; i++) {
+    int retrievedValue = 10+i*i;
+    insertOneInteger(list, retrievedValue);
+  }
+  __m256i output = _mm256_set_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
+  return output;
+}
+
+void addData(AVXVec *head, ) {
+
+}
+
+void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
   printf("%i",(int) (((int**)input)[0])[0]);
@@ -104,17 +119,6 @@ void test(int *list) {
   list[1] = 100;
 }
 
-__m256i getInputValues() {
-  int list[8] = {0,0,0,0,0,0,0,0};
-  int i;
-  for (i = 0; i < 8; i++) {
-    int retrievedValue = 10+i*i;
-    insertOneInteger(list, retrievedValue);
-  }
-  __m256i output = _mm256_set_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
-  return output;
-}
-
 int main() {
   /* Initialize the two argument vectors */
   int tempA[3] = {1000,2000,3000};
@@ -177,3 +181,7 @@ int main() {
 
 // _mm256_slli_epi32 shift left 32 bit IntrinsicsGuide
 // _mm256_srli_epi32 shift right, zeros
+
+__m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+__m256i _mm256_load_si256 (__m256i const * mem_addr)
+
