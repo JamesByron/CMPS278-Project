@@ -19,7 +19,7 @@ git
 */
 struct AVXVec {
   struct AVXVec *child;
-  __m256i data[][];
+  __m256i **data;
   int bottom = 1;
   int dataLength = 0; // The number of vectors in each row of data[]
   int currentDataIndex = 0; // the current index in data[] that we can fill, always < 10
@@ -203,9 +203,7 @@ int main() {
   //int storeMe = _mm256_extract_epi32(result, 7);
   result = _mm256_insert_epi32(_mm256_slli_si256(result, 4), 100, 4);
   //int* f = (int*)&result;
-  int g[] = {1,2,3,4,5,6,7,8};
-  result = _mm256_load_si256(g);
-  f = (int*)&result;
+  //f = (int*)&result;
   //int* h = (int*)g;
   //printf("mod %i\n",239%8);
   //printf("v0[7] %i\n",((int*)&v0)[7]);
