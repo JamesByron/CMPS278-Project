@@ -1,23 +1,6 @@
 #include <immintrin.h>
 #include <stdio.h>
-/* 
-Insert
-1) get 8 values into array
-2) Convert to vector
-3) Recursize:
-4) if next domn doen't exist, create it
-5) Push into current
-6) If current is full, sort all+combine, 
-7) Recursive push all into next down
-8)      reset current
-
-*/
-struct AVXVec {
-  struct AVXVec *child;
-  __m256i **data;
-  int dataLength; // The number of vectors in each row of data[]
-  int currentDataIndex; // the current index in data[] that we can fill, always < 10
-};
+#include "code.h"
 
 void insertOneInteger(int *list, int value) {
   int i;
@@ -30,13 +13,43 @@ void insertOneInteger(int *list, int value) {
   }
 }
 
-void storeValues(struct AVXVec *destination) {
+void storeValues(struct AVXVec *destination, __m256i *vec, int length) {
+  // push output into AVXvec
+  if ((*destination).bottom == 1) {
+    (*destination).bottom = 0;
+    (*destination).child = malloc(sizeof(struct AVXVec));
+    (*(*destination).child).dataLength = length*10;
+    (*(*destination).child).currentDataIndex = 0;
+    (*(*destination).child).bottom = 1;
+    //(*(*destination).child).data = malloc(sizeof(__m256i[10][length*10]));
+    (*(*destination).child).data = malloc(sizeof(vec)*10);
+  }
+  (*destination).data[(*destination).currentDataIndex] = vec;
+  (*destination).currentDataIndex++;
+  if ((*destination).currentDataIndex == 10) {
+    __m256i *newVec = malloc(sizeof(__m256i[length*10]));
+    // sort and merge
+    int newLength = length * 10;
+    simpleColumnSortHigh((*destination).data, newVec, 100);
+    // push new vector array down to child
+    storeValues((*destination).child, newVec, newLength);
+    // free all current ones
+    int i;
+    for (i = 0; i < 10; i++) {
+      // if I have problems, comment this out
+      free((*destination).data[i]);
+    }
+  }
+}
+
+__m256i getDataFromClient(struct AVXVec *head) {
   int list[8] = {0,0,0,0,0,0,0,0};
   int i = 0;
   while (i < 8) {
     int retrievedValue = 10+i*i;
     if (0) {
       // this is where we would get a value to return it to the client.
+      //getValue(head, value);
     }
     else {
       insertOneInteger(list, retrievedValue);
@@ -44,12 +57,13 @@ void storeValues(struct AVXVec *destination) {
     i++;
   }
   __m256i output = _mm256_set_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
-  // push output into AVXvec
-  storeValues(destination);
+  return output;
 }
 
-void addData(struct AVXVec *head, __m256i newData) {
-
+void createDatabase(struct AVXVec *head) {
+  __m256i *vec = malloc(sizeof(__m256i[1]));
+  vec[1] = getDataFromClient(head);
+  storeValues(head, vec, 1);
 }
 
 int getValue(struct AVXVec *current, int value) {
@@ -92,7 +106,7 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
   printf("%i",(int) (((int**)input)[0])[0]);
   //__m256i output[length * 10];
   __m256i tempVector;
-  int numSets = 5; // Must change for loop too
+  int numSets = 10; // Must change for loop too
   int numToMove = (8 * numSets * length)-1;
   int numMoved = 0;
   int insertIndex = 7;
@@ -100,7 +114,13 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
     int i = 0;
     for (i = 0; i < length; i++) {
       // Sort 1
-      tempVector = _mm256_max_epi32(input[3][i], input[4][i]);
+      int s;
+      for (s = numSets-1; s > 0; s--) {
+        tempVector = _mm256_max_epi32(input[s-1][i], input[s][i]);
+        input[s][i] = _mm256_min_epi32(input[s-1][i], input[s][i]);
+        input[s-1][i] = tempVector;
+      }
+      /*tempVector = _mm256_max_epi32(input[3][i], input[4][i]);
       input[4][i] = _mm256_min_epi32(input[3][i], input[4][i]);
       input[3][i] = tempVector;
 
@@ -114,7 +134,7 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
 
       tempVector = _mm256_max_epi32(input[0][i], input[1][i]);
       input[1][i] = _mm256_min_epi32(input[0][i], input[1][i]);
-      input[0][i] = tempVector;
+      input[0][i] = tempVector;*/
     }
     // Items are now sorted with highest on top
     // Take 1
@@ -158,7 +178,7 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
     }
     if ((numMoved % (numSets * 8)) == 0) {
       length--;
-      // We want to not lists when they are empty
+      // We want to not sort lists when they are empty
       // but we don't do this if we are using the double sided approach
       // Other idea is to resort only when input[0][0][7] < input[0][1][7]
       // but we'd have to sort 2+ times and not take more than recent sorts 
@@ -166,17 +186,7 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
   }
 }
 
-void test(int *list) {
-  list[0] = 0;
-  list[1] = 100;
-}
-
 int main() {
-  /* Initialize the two argument vectors */
-  int tempA[3] = {1000,2000,3000};
-  test(tempA);
-  printf("%i %i %i\n",tempA[0], tempA[1], tempA[2]);
-
   __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
   __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);
   __m256i v2 = _mm256_setr_epi32(20,26,30,33,34,38,60,65);
@@ -208,8 +218,10 @@ int main() {
   //int* h = (int*)g;
   //printf("mod %i\n",239%8);
   //printf("v0[7] %i\n",((int*)&v0)[7]);
-  //printf("size __m256i %lu\n",sizeof(__m256i));
-  //printf("size v4 %lu\n",sizeof(v4));
+  struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
+  printf("size __m256i %lu\n",sizeof(__m256i[10][10]));
+  printf("size _AVXVec %lu\n",sizeof(*newStruct));
+  printf("size v4 %lu\n",sizeof(v4));
   //printf("size allTen %lu\n",sizeof(allTen));
   printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
   return 0;
