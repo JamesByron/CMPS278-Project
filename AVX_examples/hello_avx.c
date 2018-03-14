@@ -1,14 +1,31 @@
 #include <immintrin.h>
 #include <stdio.h>
+/* 
+Insert
+1) get 8 values into array
+2) Convert to vector
+3) Recursize:
+4) if next domn doen't exist, create it
+5) Push into current
+6) If current is full, sort all+combine, 
+7) Recursive push all into next down
+8)      reset current
 
+git
+1) Search each row low to high, until not found
+2)  If found, return true
+3) else Recursize, go down
+  
+*/
 struct AVXVec {
   struct AVXVec *child;
-  __m256i *data;
+  __m256i data[][];
+  int bottom = 1;
   int dataLength = 0; // The number of vectors in each row of data[]
   int currentDataIndex = 0; // the current index in data[] that we can fill, always < 10
   };
-
-__m256i getStoreValues() {
+  
+void storeValues() {
   int list[8] = {0,0,0,0,0,0,0,0};
   int i;
   for (i = 0; i < 8; i++) {
@@ -21,6 +38,40 @@ __m256i getStoreValues() {
 
 void addData(AVXVec *head, ) {
 
+}
+
+int getValue(AVXVec *current, int value) {
+  if ((*current).bottom) {
+    return 0;
+  }
+  int i;
+  int length = (*current).dataLength;
+  int endRow = (*current).currentDataIndex;
+  for (i = 0; i < endRow; i++) {
+	int j;
+	for (j = 0; j < length; j++) {
+	  int temp[8] = {_mm256_extract_epi32((*current).data[i][j],0),
+	                 _mm256_extract_epi32((*current).data[i][j],1),
+					 _mm256_extract_epi32((*current).data[i][j],2),
+					 _mm256_extract_epi32((*current).data[i][j],3),
+					 _mm256_extract_epi32((*current).data[i][j],4),
+					 _mm256_extract_epi32((*current).data[i][j],5),
+					 _mm256_extract_epi32((*current).data[i][j],6),
+					 _mm256_extract_epi32((*current).data[i][j],7)};
+	  int k;
+	  for (k = 0; k < 8; k++) {
+	    if (temp[k] == value) {
+		  return value;
+		}
+		if (temp[k] > value) {
+		  // skip to the next row
+		  k = 8;
+		  j = length;
+		}
+	  }
+	}
+  }
+  return getValue((*current).child, value);
 }
 
 void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
