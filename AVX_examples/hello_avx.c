@@ -20,7 +20,6 @@ git
 struct AVXVec {
   struct AVXVec *child;
   __m256i **data;
-  int bottom = 1;
   int dataLength = 0; // The number of vectors in each row of data[]
   int currentDataIndex = 0; // the current index in data[] that we can fill, always < 10
   };
@@ -41,7 +40,7 @@ void addData(AVXVec *head, ) {
 }
 
 int getValue(AVXVec *current, int value) {
-  if ((*current).bottom) {
+  if ((*current).dataLength == 0) {
     return 0;
   }
   int i;
