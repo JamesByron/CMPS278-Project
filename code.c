@@ -1,6 +1,63 @@
 #include <immintrin.h>
 #include <stdio.h>
 #include "code.h"
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <linux/un.h>
+
+struct sockaddr_un address;
+int socket_fd, connection_fd;
+socklen_t address_length;
+char buffer[128];
+int n;
+int connection;
+char *stopstring;
+
+void initializeSocket() {
+  // Initialize server
+  socket_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+  if (socket_fd < 0){
+    printf("socket() failed\n");
+    exit(1);
+  }
+  unlink("/tmp/soc");
+  memset(&address, 0, sizeof(struct sockaddr_un));
+  address.sun_family = AF_UNIX;
+  snprintf(address.sun_path, UNIX_PATH_MAX, "/tmp/soc");
+  if (bind(socket_fd, (struct sockaddr *) &address, sizeof(struct sockaddr_un)) != 0)
+  {
+      printf("bind() failed\n");
+      exit(1);
+  }
+  if(listen(socket_fd, 5) != 0)
+  {
+      printf("listen() failed\n");
+      exit(1);
+  }
+  address_length = sizeof(address);
+  connection = (connection_fd = accept(socket_fd, (struct sockaddr *) &address, &address_length));
+  printf("successfully received a connection\n");
+}
+
+int getOneValue(int *gets) {
+  bzero(buffer,128);
+  n = read(connection_fd,buffer,127);
+  if (buffer[0] == 'g') {
+    buffer[0] = ' ';
+    *gets = 1;
+  }
+  long returnedLong = strtol(buffer, &stopstring, 10);
+  return (int)returnedLong;
+}
+
+void sendOneValue(int value) {
+  bzero(buffer,128);
+  snprintf(buffer, sizeof buffer, "%i*", value);
+  n = write(connection_fd, buffer, strlen(buffer));
+}
 
 void insertOneInteger(int *list, int value) {
   int i;
@@ -15,6 +72,7 @@ void insertOneInteger(int *list, int value) {
 
 void storeValues(struct AVXVec *destination, __m256i *vec, int length) {
   // push output into AVXvec
+  printf("Store values\n");
   if ((*destination).bottom == 1) {
     (*destination).bottom = 0;
     (*destination).child = malloc(sizeof(struct AVXVec));
@@ -23,14 +81,18 @@ void storeValues(struct AVXVec *destination, __m256i *vec, int length) {
     (*(*destination).child).bottom = 1;
     //(*(*destination).child).data = malloc(sizeof(__m256i[10][length*10]));
     (*(*destination).child).data = malloc(sizeof(vec)*10);
+    printf("here made child\n");
   }
+  printf("Before store\n");
   (*destination).data[(*destination).currentDataIndex] = vec;
+  printf("After store\n");
   (*destination).currentDataIndex++;
   if ((*destination).currentDataIndex == 10) {
-    __m256i *newVec = malloc(sizeof(__m256i[length*10]));
-    // sort and merge
+      printf("here 10!\n");
     int newLength = length * 10;
-    simpleColumnSortHigh((*destination).data, newVec, 100);
+    __m256i *newVec = malloc(sizeof(__m256i[newLength]));
+    // sort and merge
+    simpleColumnSortHigh((*destination).data, newVec, length);
     // push new vector array down to child
     storeValues((*destination).child, newVec, newLength);
     // free all current ones
@@ -46,28 +108,38 @@ __m256i getDataFromClient(struct AVXVec *head) {
   int list[8] = {0,0,0,0,0,0,0,0};
   int i = 0;
   while (i < 8) {
-    int retrievedValue = 10+i*i;
-    if (0) {
+    int newValue = 10+i*i;
+    int gets = 0;
+    //int newValue = getOneValue(&gets);
+    if (gets) {
       // this is where we would get a value to return it to the client.
-      //getValue(head, value);
+      int found = getValue(head, newValue);
+      sendOneValue(found);
     }
     else {
-      insertOneInteger(list, retrievedValue);
+      insertOneInteger(list, newValue);
     }
     i++;
   }
-  __m256i output = _mm256_set_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
+  printf("%i %i %i %i %i %i %i %i\n",list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7]);
+  __m256i output = _mm256_setr_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
   return output;
 }
 
 void createDatabase(struct AVXVec *head) {
-  __m256i *vec = malloc(sizeof(__m256i[1]));
-  vec[1] = getDataFromClient(head);
+  //__m256i *vec = (__m256i*)malloc(sizeof(__m256i));
+  __m256i vec[1];
+  printf("here 1\n");
+  __m256i newVec = getDataFromClient(head);
+  printf("here 1.1 %ld %ld\n", sizeof(newVec), sizeof(vec[0]));
+  vec[0] = newVec;
+  printf("here 2\n");
+  //int* f = (int*)vec; printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
   storeValues(head, vec, 1);
 }
 
 int getValue(struct AVXVec *current, int value) {
-  if ((*current).dataLength == 0) {
+  if ((*current).bottom == 1) {
     return 0;
   }
   int i;
@@ -103,7 +175,8 @@ int getValue(struct AVXVec *current, int value) {
 void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
-  printf("%i",(int) (((int**)input)[0])[0]);
+  printf("Here in sort\n");
+  printf("%i\n",(int) (((int**)input)[0])[0]);
   //__m256i output[length * 10];
   __m256i tempVector;
   int numSets = 10; // Must change for loop too
@@ -120,21 +193,6 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
         input[s][i] = _mm256_min_epi32(input[s-1][i], input[s][i]);
         input[s-1][i] = tempVector;
       }
-      /*tempVector = _mm256_max_epi32(input[3][i], input[4][i]);
-      input[4][i] = _mm256_min_epi32(input[3][i], input[4][i]);
-      input[3][i] = tempVector;
-
-      tempVector = _mm256_max_epi32(input[2][i], input[3][i]);
-      input[3][i] = _mm256_min_epi32(input[2][i], input[3][i]);
-      input[2][i] = tempVector;
-
-      tempVector = _mm256_max_epi32(input[1][i], input[2][i]);
-      input[2][i] = _mm256_min_epi32(input[1][i], input[2][i]);
-      input[1][i] = tempVector;
-
-      tempVector = _mm256_max_epi32(input[0][i], input[1][i]);
-      input[1][i] = _mm256_min_epi32(input[0][i], input[1][i]);
-      input[0][i] = tempVector;*/
     }
     // Items are now sorted with highest on top
     // Take 1
@@ -187,43 +245,84 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
 }
 
 int main() {
-  __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
-  __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);
-  __m256i v2 = _mm256_setr_epi32(20,26,30,33,34,38,60,65);
-  __m256i v3 = _mm256_setr_epi32(15,19,28,31,64,66,67,68);
-  __m256i v4 = _mm256_setr_epi32(1,3,4,7,21,22,25,30);
-  char t = v0[0] > v1[0];
-  //__m256i *bar = malloc(1 * sizeof __m256i);
-  int length = 1;
-  int vecs = 5;
-  int newLength = length * 10;
-  __m256i allTen[5][length];
-  allTen[0][0] = v0;
-  allTen[1][0] = v1;
-  allTen[2][0] = v2;
-  allTen[3][0] = v3;
-  allTen[4][0] = v4;
-  /* Compute the difference between the two vectors */
-  //__m256i result = _mm256_sub_epi32(evens, odds);
-  __m256i result = _mm256_max_epi32(v1,v3);
-  __m256i result2 = _mm256_max_epi32(v1,v3);
-  int* f = (int*)&result;
-  printf("%i %i %i %i %i %i %i %i\n",
-    f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
-  //int shift = _mm256_extract_epi32(result, 3);
-  //int storeMe = _mm256_extract_epi32(result, 7);
-  result = _mm256_insert_epi32(_mm256_slli_si256(result, 4), 100, 4);
-  //int* f = (int*)&result;
-  //f = (int*)&result;
-  //int* h = (int*)g;
-  //printf("mod %i\n",239%8);
-  //printf("v0[7] %i\n",((int*)&v0)[7]);
-  struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
-  printf("size __m256i %lu\n",sizeof(__m256i[10][10]));
-  printf("size _AVXVec %lu\n",sizeof(*newStruct));
-  printf("size v4 %lu\n",sizeof(v4));
-  //printf("size allTen %lu\n",sizeof(allTen));
-  printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
+  //initializeSocket();
+  struct AVXVec *head = malloc(sizeof(struct AVXVec));
+  (*head).bottom = 1;
+  (*head).dataLength = 1;
+  (*head).currentDataIndex = 0;
+  (*head).data = malloc(sizeof(__m256i*)*10);
+  //printf("%ld\n", sizeof(__m256i*));
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  createDatabase(head);
+  printf("current %i\n", (*head).currentDataIndex);
+  
+  /*
+  bzero(buffer,128);
+  snprintf(buffer, sizeof buffer, "2456get");
+  if (buffer[0] == 'g') {
+    buffer[0] = ' ';
+  }
+  long returnedLong = strtol(buffer, &stopstring, 10);
+  printf("%ld %s\n",returnedLong, stopstring);
+  */
+  if (0) {
+    __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
+    __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);
+    __m256i v2 = _mm256_setr_epi32(20,26,30,33,34,38,60,65);
+    __m256i v3 = _mm256_setr_epi32(15,19,28,31,64,66,67,68);
+    __m256i v4 = _mm256_setr_epi32(1,3,4,7,21,22,25,30);
+    char t = v0[0] > v1[0];
+    //__m256i *bar = malloc(1 * sizeof __m256i);
+    int length = 1;
+    int vecs = 5;
+    int newLength = length * 10;
+    __m256i allTen[5][length];
+    allTen[0][0] = v0;
+    allTen[1][0] = v1;
+    allTen[2][0] = v2;
+    allTen[3][0] = v3;
+    allTen[4][0] = v4;
+    /* Compute the difference between the two vectors */
+    //__m256i result = _mm256_sub_epi32(evens, odds);
+     __m256i result = _mm256_max_epi32(v1,v3);
+    __m256i result2 = _mm256_max_epi32(v1,v3);
+    int* f = (int*)&result;
+    printf("%i %i %i %i %i %i %i %i\n",
+      f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
+    //int shift = _mm256_extract_epi32(result, 3);
+    //int storeMe = _mm256_extract_epi32(result, 7);
+    result = _mm256_insert_epi32(_mm256_slli_si256(result, 4), 100, 4);
+    //int* f = (int*)&result;
+    //f = (int*)&result;
+    //int* h = (int*)g;
+    //printf("mod %i\n",239%8);
+    //printf("v0[7] %i\n",((int*)&v0)[7]);
+    struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
+    printf("size __m256i %lu\n",sizeof(__m256i[10][10]));
+    printf("size _AVXVec %lu\n",sizeof(*newStruct));
+    printf("size v4 %lu\n",sizeof(v4));
+    //printf("size allTen %lu\n",sizeof(allTen));
+    printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
+  }
   return 0;
 }
 // int

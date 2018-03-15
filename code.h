@@ -9,6 +9,9 @@ struct AVXVec {
   __m256i **data;
 };
 
+void initializeSocket();
+void sendOneValue(int value);
+int getOneValue();
 void insertOneInteger(int *list, int value);
 void storeValues(struct AVXVec *destination, __m256i *vec, int length);
 __m256i getDataFromClient(struct AVXVec *head);
