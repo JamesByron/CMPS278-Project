@@ -74,12 +74,15 @@ void storeValues() {
   if (currentRow == 10) {
     printf("here 10!\n");
     int newLength = currentLength * 10;
-    int newVec[newLength*8];
+    int *newVec = (int*)calloc(newLength*8, sizeof(int));
     printf("Pointer %ld\n", sizeof(newVec));
     // sort and merge
     simpleColumnSortHigh(allData, newVec, currentLength);
-    int *vecLists[10];
-    allData = vecLists;
+    int i;
+    for (i = 0; i < 10; i++) {
+      free(allData[i]);
+    }
+    printf("freed data");
     allData[0] = newVec;
     currentRow = 1;
     currentLength = newLength;
@@ -89,12 +92,8 @@ void storeValues() {
 void getDataFromClient() {
   printf("Here in getDataFromClient\n");
   int totalLength = currentLength * 8;
-  int list[totalLength];
-  int i;
-  for (i = 0; i < totalLength; i++) {
-    list[i] = 0;
-  }
-  i = 0;
+  int *list = (int*)calloc(totalLength, sizeof(int));
+  int i = 0;
   while (i < totalLength) {
     int newValue = (rand()/2000000)+(rand()/2000000);
     printf("%i, ", newValue);
@@ -179,30 +178,36 @@ void simpleColumnSortHigh(int **input, int *output, int length) {
   int numMoved = 0;
   int insertIndex = 7;
   printVec();
-  __m256i data[10][length];
+  printf("making litss\n");
+  __m256i data[numSets*length];
   int r;
+  printf("made lists %ld\n", sizeof(data));
   int c;
-  for (c = 0; c < length; c++) {
-    int end = (c*8)-1;
-    for (r = 0; r < 10; r++) {
-      data[r][c] = _mm256_setr_epi32(input[r][end-7],input[r][end-6],input[r][end-5],input[r][end-4],input[r][end-3],input[r][end-2],input[r][end-1],input[r][end]);
+  for (r = 0; r < numSets; r++) {
+    //__m256i *tempV = (__m256i*)calloc(length, sizeof(__m256i));
+    for (c = 0; c < length; c++) {
+      int end = c*8;
+      printf("here %i %i\n", r, c);
+      data[r*length+c] = _mm256_setr_epi32(input[r][end],input[r][end+1],input[r][end+2],input[r][end+3],input[r][end+4],input[r][end+5],input[r][end+6],input[r][end+7]);
+      printf("here too %i %i\n", r, c);
+      printf("ok %i %i\n", r, c);
     }
   }
   while (numToMove >= 0) {
-    int i = 0;
-    for (i = length; i > 0; i--) {
+    int i;
+    for (i = 0; i < length; i++) {
       //sort 1
       int s;
       for (s = numSets-1; s > 0; s--) {
-        __m256i tempVector = _mm256_max_epi32(data[s-1][i], data[s][i]);
-        data[s][i] = _mm256_min_epi32(data[s-1][i], data[s][i]);
-        data[s-1][i] = tempVector;
+        __m256i tempVector = _mm256_max_epi32(data[(s-1)*length+i], data[s*length+i]);
+        data[s*length+i] = _mm256_min_epi32(data[(s-1)*length+i], data[s*length+i]);
+        data[(s-1)*length+i] = tempVector;
       }
     }
     // Items are now sorted with highest on top
     // Take 1
-    int maxValue = _mm256_extract_epi32(data[0][length-1], 7);
-    printf("%i ", maxValue);
+    int maxValue = _mm256_extract_epi32(data[length-1], 7);
+    printf("maxValue %i ", maxValue);
     output[numToMove] = maxValue;
     //output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, insertIndex);
     numMoved++;
@@ -212,15 +217,16 @@ void simpleColumnSortHigh(int **input, int *output, int length) {
       insertIndex = 7;
     }
     // shift
-    data[0][length-1] = _mm256_insert_epi32(_mm256_slli_si256(data[0][length-1], 4), _mm256_extract_epi32(data[0][length-1], 3), 4);
+    data[length-1] = _mm256_insert_epi32(_mm256_slli_si256(data[length-1], 4), _mm256_extract_epi32(data[length-1], 3), 4);
     // we already did input[0][0]
     for (i = length-2; i >= 0; i--) {
-      int extractedValue = _mm256_extract_epi32(data[0][i], 7);
+      int extractedValue = _mm256_extract_epi32(data[i], 7);
       // insert it into i-1 column 0
-      data[0][i+1] = _mm256_insert_epi32(data[0][i+1], extractedValue, 0);
-      // now shif input[0][i]
-      data[0][i] = _mm256_insert_epi32(_mm256_slli_si256(data[0][i], 4), _mm256_extract_epi32(data[0][i], 3), 4);
+      data[i+1] = _mm256_insert_epi32(data[i+1], extractedValue, 0);
+      // now shift input[0][i]
+      data[i] = _mm256_insert_epi32(_mm256_slli_si256(data[i], 4), _mm256_extract_epi32(data[i], 3), 4);
     }
+    
     if ((numMoved % (numSets * 8)) == 0) {
       //length--;
       // We want to not sort lists when they are empty
