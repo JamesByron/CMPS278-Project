@@ -6,7 +6,7 @@ int n;
 int socket_fd, connection_fd;
 int connection;
 char *stopstring;
-__m256i **allData;
+int **allData;
 int currentRow;
 int currentLength;
 
@@ -18,7 +18,7 @@ void storeValues();
 void getDataFromClient();
 void createDatabase();
 int getValue(int *list, int value);
-void simpleColumnSortHigh(__m256i **input, __m256i *output, int length);
+void simpleColumnSortHigh(int **input, int *output, int length);
 int main();
 void printVec();
 

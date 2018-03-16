@@ -74,18 +74,13 @@ void storeValues() {
   if (currentRow == 10) {
     printf("here 10!\n");
     int newLength = currentLength * 10;
-    //__m256i **newVec = (__m256i**)calloc(newLength, __m256i);
-    __m256i newVec[newLength];
+    int newVec[newLength*8];
     printf("Pointer %ld\n", sizeof(newVec));
     // sort and merge
     simpleColumnSortHigh(allData, newVec, currentLength);
-    __m256i *vecLists[10];
+    int *vecLists[10];
     allData = vecLists;
     allData[0] = newVec;
-    int x = (int)_mm256_extract_epi32(allData[0][5],0);
-    printf("x is %i\n", x);
-    //allData = (__m256i**)newVec;
-    //storeValues(newVec);
     currentRow = 1;
     currentLength = newLength;
   }
@@ -95,13 +90,10 @@ void getDataFromClient() {
   printf("Here in getDataFromClient\n");
   int totalLength = currentLength * 8;
   int list[totalLength];
-  printf("\nbegin\n");
-  printVec();
   int i;
   for (i = 0; i < totalLength; i++) {
     list[i] = 0;
   }
-  printf("made list\n");
   i = 0;
   while (i < totalLength) {
     int newValue = (rand()/2000000)+(rand()/2000000);
@@ -117,17 +109,16 @@ void getDataFromClient() {
       insertOneInteger(list, newValue);
       i++;
     }
-  }printf("\nmiddle\n");
-  printVec();
-  __m256i *newV;
-  newV = (__m256i*)calloc(currentLength, sizeof(__m256i));
+  }
+  /*newV = (__m256i*)calloc(currentLength, sizeof(__m256i));
   for (i = 0; i < currentLength; i++) {
     int start = i*8;
     printf("Store %ld\n", sizeof(allData));
     (*newV)[i] = _mm256_setr_epi32(list[start],list[start+1],list[start+2],list[start+3],list[start+4],list[start+5],list[start+6],list[start+7]);
     printf("allData %i %p %p %p\n", currentRow, allData, allData[0], allData[1]);
     if (currentRow == 0) allData[currentRow] = newV;
-  }
+  }*/
+  allData[currentRow] = list;
   currentRow++;
   storeValues();
   printf("\nend\n");
@@ -145,29 +136,17 @@ int getValue(int *list, int value) {
   int i;
   for (i = 0; i < currentRow; i++) {
 	  int j;
-  	for (j = 0; j < currentLength; j++) {
-  	  int temp[8] = {_mm256_extract_epi32(allData[i][j],0),
-  	                 _mm256_extract_epi32(allData[i][j],1),
-  					 _mm256_extract_epi32(allData[i][j],2),
-  					 _mm256_extract_epi32(allData[i][j],3),
-  					 _mm256_extract_epi32(allData[i][j],4),
-  					 _mm256_extract_epi32(allData[i][j],5),
-  					 _mm256_extract_epi32(allData[i][j],6),
-  					 _mm256_extract_epi32(allData[i][j],7)};
-  	  int k;
-  	  for (k = 0; k < 8; k++) {
-  	    if (temp[k] == value) {
-  		    return value;
-  		  }
-    		if (temp[k] > value) {
-    		  // skip to the next row
-    		  k = 8;
-    		  j = currentLength;
-    		}
-	    }
+  	for (j = 0; j < currentLength*8; j++) {
+	    if (allData[i][j] == value) {
+		    return value;
+		  }
+  		if (allData[i][j] > value) {
+  		  // skip to the next row
+  		  j = 8*currentLength;
+  		}
 	  }
   }
-  for (i = (currentLength*10)-1; i >= 0; i--) {
+  for (i = (currentLength*80)-1; i >= 0; i--) {
     if (list[i] < value) {
       i = -1;
     }
@@ -180,74 +159,51 @@ int getValue(int *list, int value) {
 
 void printVec(){
   int j;
+  int i;
   printf("current %i\n", currentRow);
-  for (j = 0; j < currentRow; j++) {
-    int x = (int)_mm256_extract_epi32(allData[j][0],0);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],1);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],2);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],3);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],4);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],5);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],6);
-    printf("%i ", x);
-    x = (int)_mm256_extract_epi32(allData[j][0],7);
-    printf("%i\n", x);
+  for (i = 0; i < currentRow; i++) {
+    for (j = 0; j < currentLength*8; j++) {
+      printf("%i ", allData[i][j]);
+    }
+    printf("\n");
   }
 }
 
-void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
+void simpleColumnSortHigh(int **input, int *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
   printf("Here in sort\n");
-    //__m256i output[length * 10];
-  __m256i tempVector;
+  //__m256i output[length * 10];
   int numSets = 10; // Must change for loop too
   int numToMove = (8 * numSets * length)-1;
   int numMoved = 0;
   int insertIndex = 7;
   printVec();
+  __m256i data[10][length];
+  int r;
+  int c;
+  for (c = 0; c < length; c++) {
+    int end = (c*8)-1;
+    for (r = 0; r < 10; r++) {
+      data[r][c] = _mm256_setr_epi32(input[r][end-7],input[r][end-6],input[r][end-5],input[r][end-4],input[r][end-3],input[r][end-2],input[r][end-1],input[r][end]);
+    }
+  }
   while (numToMove >= 0) {
     int i = 0;
-    for (i = 0; i < length; i++) {
-      // Sort 1
+    for (i = length; i > 0; i--) {
+      //sort 1
       int s;
       for (s = numSets-1; s > 0; s--) {
-        tempVector = _mm256_max_epi32(input[s-1][i], input[s][i]);
-        input[s][i] = _mm256_min_epi32(input[s-1][i], input[s][i]);
-        input[s-1][i] = tempVector;
+        __m256i tempVector = _mm256_max_epi32(data[s-1][i], data[s][i]);
+        data[s][i] = _mm256_min_epi32(data[s-1][i], data[s][i]);
+        data[s-1][i] = tempVector;
       }
-    }printVec();
-    exit(0);
+    }
     // Items are now sorted with highest on top
     // Take 1
-    int maxValue = _mm256_extract_epi32(input[0][0], 7);
+    int maxValue = _mm256_extract_epi32(data[0][length-1], 7);
     printf("%i ", maxValue);
-    if (insertIndex > 3) {
-      if (insertIndex > 5) {
-        if (insertIndex == 6) { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 6); }
-        else { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 7); }
-      }
-      else {
-        if (insertIndex == 4) { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 4); }
-        else { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 5); }
-      }
-    }
-    else {
-      if (insertIndex > 1) {
-        if (insertIndex == 2) { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 2); }
-        else { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 3); }
-      }
-      else {
-        if (insertIndex == 1) { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 1); }
-        else { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 0); }
-      }
-    }
+    output[numToMove] = maxValue;
     //output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, insertIndex);
     numMoved++;
     numToMove--;
@@ -256,17 +212,17 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
       insertIndex = 7;
     }
     // shift
-    input[0][0] = _mm256_insert_epi32(_mm256_slli_si256(input[0][0], 4), _mm256_extract_epi32(input[0][0], 3), 4);
+    data[0][length-1] = _mm256_insert_epi32(_mm256_slli_si256(data[0][length-1], 4), _mm256_extract_epi32(data[0][length-1], 3), 4);
     // we already did input[0][0]
-    for (i = 1; i < length; i++) {
-      int extractedValue = _mm256_extract_epi32(input[0][i], 7);
+    for (i = length-2; i >= 0; i--) {
+      int extractedValue = _mm256_extract_epi32(data[0][i], 7);
       // insert it into i-1 column 0
-      input[0][i-1] = _mm256_insert_epi32(input[0][i-1], extractedValue, 0);
+      data[0][i+1] = _mm256_insert_epi32(data[0][i+1], extractedValue, 0);
       // now shif input[0][i]
-      input[0][i] = _mm256_insert_epi32(_mm256_slli_si256(input[0][i], 4), _mm256_extract_epi32(input[0][i], 3), 4);
+      data[0][i] = _mm256_insert_epi32(_mm256_slli_si256(data[0][i], 4), _mm256_extract_epi32(data[0][i], 3), 4);
     }
     if ((numMoved % (numSets * 8)) == 0) {
-      length--;
+      //length--;
       // We want to not sort lists when they are empty
       // but we don't do this if we are using the double sided approach
       // Other idea is to resort only when input[0][0][7] < input[0][1][7]
@@ -281,7 +237,7 @@ int main() {
   //initializeSocket();
   currentRow = 0;
   currentLength = 1;
-  __m256i *vecLists[10];
+  int *vecLists[10];
   allData = vecLists;
   /*printf("2\n");
   __m256i newV[1];
