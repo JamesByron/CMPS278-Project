@@ -7,14 +7,11 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <linux/un.h>
+#include <time.h>
 
 struct sockaddr_un address;
-int socket_fd, connection_fd;
 socklen_t address_length;
-char buffer[128];
-int n;
-int connection;
-char *stopstring;
+
 
 void initializeSocket() {
   // Initialize server
@@ -61,7 +58,7 @@ void sendOneValue(int value) {
 
 void insertOneInteger(int *list, int value) {
   int i;
-  for (i = 7; i >= 0; i--) {
+  for (i = (currentLength*8)-1; i >= 0; i--) {
     if (value > list[i]) {
       int temp = list[i];
       list[i] = value;
@@ -70,119 +67,151 @@ void insertOneInteger(int *list, int value) {
   }
 }
 
-void storeValues(struct AVXVec *destination, __m256i *vec, int length) {
-  // push output into AVXvec
+void storeValues() {
   printf("Store values\n");
-  if ((*destination).bottom == 1) {
-    (*destination).bottom = 0;
-    (*destination).child = malloc(sizeof(struct AVXVec));
-    (*(*destination).child).dataLength = length*10;
-    (*(*destination).child).currentDataIndex = 0;
-    (*(*destination).child).bottom = 1;
-    //(*(*destination).child).data = malloc(sizeof(__m256i[10][length*10]));
-    (*(*destination).child).data = malloc(sizeof(vec)*10);
-    printf("here made child\n");
-  }
-  printf("Before store\n");
-  (*destination).data[(*destination).currentDataIndex] = vec;
-  printf("After store\n");
-  (*destination).currentDataIndex++;
-  if ((*destination).currentDataIndex == 10) {
-      printf("here 10!\n");
-    int newLength = length * 10;
-    __m256i *newVec = malloc(sizeof(__m256i[newLength]));
+  //allData[currentRow] = vec;
+  //currentRovw++;
+  if (currentRow == 10) {
+    printf("here 10!\n");
+    int newLength = currentLength * 10;
+    //__m256i **newVec = (__m256i**)calloc(newLength, __m256i);
+    __m256i newVec[newLength];
+    printf("Pointer %ld\n", sizeof(newVec));
     // sort and merge
-    simpleColumnSortHigh((*destination).data, newVec, length);
-    // push new vector array down to child
-    storeValues((*destination).child, newVec, newLength);
-    // free all current ones
-    int i;
-    for (i = 0; i < 10; i++) {
-      // if I have problems, comment this out
-      free((*destination).data[i]);
-    }
+    simpleColumnSortHigh(allData, newVec, currentLength);
+    __m256i *vecLists[10];
+    allData = vecLists;
+    allData[0] = newVec;
+    int x = (int)_mm256_extract_epi32(allData[0][5],0);
+    printf("x is %i\n", x);
+    //allData = (__m256i**)newVec;
+    //storeValues(newVec);
+    currentRow = 1;
+    currentLength = newLength;
   }
 }
 
-__m256i getDataFromClient(struct AVXVec *head) {
-  int list[8] = {0,0,0,0,0,0,0,0};
-  int i = 0;
-  while (i < 8) {
-    int newValue = 10+i*i;
+void getDataFromClient() {
+  printf("Here in getDataFromClient\n");
+  int totalLength = currentLength * 8;
+  int list[totalLength];
+  printf("\nbegin\n");
+  printVec();
+  int i;
+  for (i = 0; i < totalLength; i++) {
+    list[i] = 0;
+  }
+  printf("made list\n");
+  i = 0;
+  while (i < totalLength) {
+    int newValue = (rand()/2000000)+(rand()/2000000);
+    printf("%i, ", newValue);
     int gets = 0;
     //int newValue = getOneValue(&gets);
     if (gets) {
       // this is where we would get a value to return it to the client.
-      int found = getValue(head, newValue);
+      int found = getValue(list, newValue);
       sendOneValue(found);
     }
     else {
       insertOneInteger(list, newValue);
+      i++;
     }
-    i++;
+  }printf("\nmiddle\n");
+  printVec();
+  __m256i *newV;
+  newV = (__m256i*)calloc(currentLength, sizeof(__m256i));
+  for (i = 0; i < currentLength; i++) {
+    int start = i*8;
+    printf("Store %ld\n", sizeof(allData));
+    (*newV)[i] = _mm256_setr_epi32(list[start],list[start+1],list[start+2],list[start+3],list[start+4],list[start+5],list[start+6],list[start+7]);
+    printf("allData %i %p %p %p\n", currentRow, allData, allData[0], allData[1]);
+    if (currentRow == 0) allData[currentRow] = newV;
   }
-  printf("%i %i %i %i %i %i %i %i\n",list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7]);
-  __m256i output = _mm256_setr_epi32(list[0],list[1],list[2],list[3],list[4],list[5],list[6],list[7]);
-  return output;
+  currentRow++;
+  storeValues();
+  printf("\nend\n");
+  printVec();
 }
 
-void createDatabase(struct AVXVec *head) {
-  //__m256i *vec = (__m256i*)malloc(sizeof(__m256i));
-  __m256i vec[1];
+void createDatabase() {
   printf("here 1\n");
-  __m256i newVec = getDataFromClient(head);
-  printf("here 1.1 %ld %ld\n", sizeof(newVec), sizeof(vec[0]));
-  vec[0] = newVec;
-  printf("here 2\n");
-  //int* f = (int*)vec; printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
-  storeValues(head, vec, 1);
+  getDataFromClient();
+  printf("here 1.1 %i %i\n", currentLength, currentRow);
+  //printf("here 2\n");
 }
 
-int getValue(struct AVXVec *current, int value) {
-  if ((*current).bottom == 1) {
-    return 0;
-  }
+int getValue(int *list, int value) {
   int i;
-  int length = (*current).dataLength;
-  int endRow = (*current).currentDataIndex;
-  for (i = 0; i < endRow; i++) {
-	int j;
-	for (j = 0; j < length; j++) {
-	  int temp[8] = {_mm256_extract_epi32((*current).data[i][j],0),
-	                 _mm256_extract_epi32((*current).data[i][j],1),
-					 _mm256_extract_epi32((*current).data[i][j],2),
-					 _mm256_extract_epi32((*current).data[i][j],3),
-					 _mm256_extract_epi32((*current).data[i][j],4),
-					 _mm256_extract_epi32((*current).data[i][j],5),
-					 _mm256_extract_epi32((*current).data[i][j],6),
-					 _mm256_extract_epi32((*current).data[i][j],7)};
-	  int k;
-	  for (k = 0; k < 8; k++) {
-	    if (temp[k] == value) {
-		  return value;
-		}
-		if (temp[k] > value) {
-		  // skip to the next row
-		  k = 8;
-		  j = length;
-		}
+  for (i = 0; i < currentRow; i++) {
+	  int j;
+  	for (j = 0; j < currentLength; j++) {
+  	  int temp[8] = {_mm256_extract_epi32(allData[i][j],0),
+  	                 _mm256_extract_epi32(allData[i][j],1),
+  					 _mm256_extract_epi32(allData[i][j],2),
+  					 _mm256_extract_epi32(allData[i][j],3),
+  					 _mm256_extract_epi32(allData[i][j],4),
+  					 _mm256_extract_epi32(allData[i][j],5),
+  					 _mm256_extract_epi32(allData[i][j],6),
+  					 _mm256_extract_epi32(allData[i][j],7)};
+  	  int k;
+  	  for (k = 0; k < 8; k++) {
+  	    if (temp[k] == value) {
+  		    return value;
+  		  }
+    		if (temp[k] > value) {
+    		  // skip to the next row
+    		  k = 8;
+    		  j = currentLength;
+    		}
+	    }
 	  }
-	}
   }
-  return getValue((*current).child, value);
+  for (i = (currentLength*10)-1; i >= 0; i--) {
+    if (list[i] < value) {
+      i = -1;
+    }
+    if (list[i] == value) {
+      return list[i];
+    }
+  }
+  return 0;
+}
+
+void printVec(){
+  int j;
+  printf("current %i\n", currentRow);
+  for (j = 0; j < currentRow; j++) {
+    int x = (int)_mm256_extract_epi32(allData[j][0],0);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],1);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],2);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],3);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],4);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],5);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],6);
+    printf("%i ", x);
+    x = (int)_mm256_extract_epi32(allData[j][0],7);
+    printf("%i\n", x);
+  }
 }
 
 void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
   printf("Here in sort\n");
-  printf("%i\n",(int) (((int**)input)[0])[0]);
-  //__m256i output[length * 10];
+    //__m256i output[length * 10];
   __m256i tempVector;
   int numSets = 10; // Must change for loop too
   int numToMove = (8 * numSets * length)-1;
   int numMoved = 0;
   int insertIndex = 7;
+  printVec();
   while (numToMove >= 0) {
     int i = 0;
     for (i = 0; i < length; i++) {
@@ -193,10 +222,12 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
         input[s][i] = _mm256_min_epi32(input[s-1][i], input[s][i]);
         input[s-1][i] = tempVector;
       }
-    }
+    }printVec();
+    exit(0);
     // Items are now sorted with highest on top
     // Take 1
     int maxValue = _mm256_extract_epi32(input[0][0], 7);
+    printf("%i ", maxValue);
     if (insertIndex > 3) {
       if (insertIndex > 5) {
         if (insertIndex == 6) { output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, 6); }
@@ -242,39 +273,49 @@ void simpleColumnSortHigh(__m256i **input, __m256i *output, int length) {
       // but we'd have to sort 2+ times and not take more than recent sorts 
     }
   }
+  printf("Done sort\n");
 }
 
 int main() {
+  srand(time(NULL));   // should only be called once
   //initializeSocket();
-  struct AVXVec *head = malloc(sizeof(struct AVXVec));
-  (*head).bottom = 1;
-  (*head).dataLength = 1;
-  (*head).currentDataIndex = 0;
-  (*head).data = malloc(sizeof(__m256i*)*10);
+  currentRow = 0;
+  currentLength = 1;
+  __m256i *vecLists[10];
+  allData = vecLists;
+  /*printf("2\n");
+  __m256i newV[1];
+  printf("3\n");
+  newV[0] = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);*/
+  printf("vecList1s %p %p\n", vecLists, vecLists[0]);
+  printf("allData %p %p\n", allData, allData[0]);
+  //malloc(sizeof(__m256i*)*10);
   //printf("%ld\n", sizeof(__m256i*));
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  createDatabase(head);
-  printf("current %i\n", (*head).currentDataIndex);
-  
+  int i;
+  for (i = 0; i < 10; i++) {
+    printf("%i\n", i);
+    createDatabase();
+    /*int j;
+    for (j = 0; j < i; j++) {
+      printf("current %i\n", currentRow);
+      int x = (int)_mm256_extract_epi32(allData[j][0],0);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],1);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],2);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],3);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],4);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],5);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],6);
+      printf("%i ", x);
+      x = (int)_mm256_extract_epi32(allData[j][0],7);
+      printf("%i\n", x);
+    }*/
+  }
   /*
   bzero(buffer,128);
   snprintf(buffer, sizeof buffer, "2456get");
@@ -316,9 +357,9 @@ int main() {
     //int* h = (int*)g;
     //printf("mod %i\n",239%8);
     //printf("v0[7] %i\n",((int*)&v0)[7]);
-    struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
+    //struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
     printf("size __m256i %lu\n",sizeof(__m256i[10][10]));
-    printf("size _AVXVec %lu\n",sizeof(*newStruct));
+    //printf("size _AVXVec %lu\n",sizeof(*newStruct));
     printf("size v4 %lu\n",sizeof(v4));
     //printf("size allTen %lu\n",sizeof(allTen));
     printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
