@@ -78,11 +78,12 @@ void storeValues() {
     gettimeofday(&tv,NULL);
     unsigned long startTime = 1000000 * tv.tv_sec + tv.tv_usec;
     // sort and merge
-    //simpleColumnSortHigh(allData, newVec, currentLength);
-    combineArrays(allData, newVec);
+    simpleColumnSortHigh(allData, newVec, currentLength);
+    //combineArrays(allData, newVec);
     gettimeofday(&tv,NULL);
     unsigned long endTime = 1000000 * tv.tv_sec + tv.tv_usec;
     printf("SortTime %lu\n", endTime-startTime);
+    printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
     int i;
     for (i = 0; i < 10; i++) {
       free(allData[i]);
@@ -279,10 +280,10 @@ int main() {
   //malloc(sizeof(__m256i*)*10);
   //printf("%ld\n", sizeof(__m256i*));
   int i;
-  for (i = 0; i < 100; i++) {
+  for (i = 0; i <= 100; i++) {
     //printf("%i\n", i);
     createDatabase();
-    printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
+    //printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
   }
   if (0) {
     __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
