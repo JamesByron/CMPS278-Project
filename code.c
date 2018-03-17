@@ -258,16 +258,7 @@ void combineArrays(int **input, int *output) {
 }
 
 int main() {
-  /*struct timeval tv;
-  gettimeofday(&tv,NULL);
-  unsigned long startTime = tv.tv_nsec;//1000000 * tv.tv_sec + tv.tv_usec;
-  gettimeofday(&tv,NULL);
-  unsigned long endTime = tv.tv_nsec;//1000000 * tv.tv_sec + tv.tv_usec;*/
-  /*struct timespec tstart={0,0}, tend={0,0};
-  clock_gettime(CLOCK_MONOTONIC, &tstart);
-  unsigned long start = 1000000000*tstart.tv_sec + 1000*tstart.tv_usec + tstart.tv_nsec;
-  clock_gettime(CLOCK_MONOTONIC, &tend);
-  printf("%ld\n", tend.tv_nsec-tstart.tv_nsec);*/
+  unsigned long st = time(NULL);
   srand(time(NULL));   // should only be called once
   //initializeSocket();
   currentRow = 0;
@@ -280,11 +271,14 @@ int main() {
   //malloc(sizeof(__m256i*)*10);
   //printf("%ld\n", sizeof(__m256i*));
   int i;
-  for (i = 0; i <= 100; i++) {
-    //printf("%i\n", i);
+  for (i = 0; i < 50; i++) {
+    printf("%i ", i);
     createDatabase();
+    unsigned long et = time(NULL);
+    printf("Total time: %lu seconds\n", et-st);
     //printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
   }
+  printf("\n\n");
   if (0) {
     __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
     __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);
