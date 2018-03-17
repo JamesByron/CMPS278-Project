@@ -68,21 +68,26 @@ void insertOneInteger(int *list, int value) {
 }
 
 void storeValues() {
-  printf("Store values\n");
-  //allData[currentRow] = vec;
-  //currentRovw++;
+  //printf("Store values\n");
   if (currentRow == 10) {
-    printf("here 10!\n");
+    struct timeval tv;
+    //printf("here 10!\n");
     int newLength = currentLength * 10;
     int *newVec = (int*)calloc(newLength*8, sizeof(int));
-    printf("Pointer %ld\n", sizeof(newVec));
+    //printf("Pointer %ld\n", sizeof(newVec));
+    gettimeofday(&tv,NULL);
+    unsigned long startTime = 1000000 * tv.tv_sec + tv.tv_usec;
     // sort and merge
-    simpleColumnSortHigh(allData, newVec, currentLength);
+    //simpleColumnSortHigh(allData, newVec, currentLength);
+    combineArrays(allData, newVec);
+    gettimeofday(&tv,NULL);
+    unsigned long endTime = 1000000 * tv.tv_sec + tv.tv_usec;
+    printf("SortTime %lu\n", endTime-startTime);
     int i;
     for (i = 0; i < 10; i++) {
       free(allData[i]);
     }
-    printf("freed data");
+    //printf("freed data\n");
     allData[0] = newVec;
     currentRow = 1;
     currentLength = newLength;
@@ -90,13 +95,13 @@ void storeValues() {
 }
 
 void getDataFromClient() {
-  printf("Here in getDataFromClient\n");
+  //printf("Here in getDataFromClient\n");
   int totalLength = currentLength * 8;
   int *list = (int*)calloc(totalLength, sizeof(int));
   int i = 0;
   while (i < totalLength) {
-    int newValue = (rand()/2000000)+(rand()/2000000);
-    printf("%i, ", newValue);
+    int newValue = rand();
+    //printf("%i, ", newValue);
     int gets = 0;
     //int newValue = getOneValue(&gets);
     if (gets) {
@@ -109,26 +114,17 @@ void getDataFromClient() {
       i++;
     }
   }
-  /*newV = (__m256i*)calloc(currentLength, sizeof(__m256i));
-  for (i = 0; i < currentLength; i++) {
-    int start = i*8;
-    printf("Store %ld\n", sizeof(allData));
-    (*newV)[i] = _mm256_setr_epi32(list[start],list[start+1],list[start+2],list[start+3],list[start+4],list[start+5],list[start+6],list[start+7]);
-    printf("allData %i %p %p %p\n", currentRow, allData, allData[0], allData[1]);
-    if (currentRow == 0) allData[currentRow] = newV;
-  }*/
   allData[currentRow] = list;
   currentRow++;
   storeValues();
-  printf("\nend\n");
-  printVec();
+  //printf("\nend\n");
+  //printVec();
 }
 
 void createDatabase() {
-  printf("here 1\n");
+  //printf("here 1\n");
   getDataFromClient();
-  printf("here 1.1 %i %i\n", currentLength, currentRow);
-  //printf("here 2\n");
+  //printf("here 1.1 %i %i\n", currentLength, currentRow);
 }
 
 int getValue(int *list, int value) {
@@ -171,26 +167,26 @@ void printVec(){
 void simpleColumnSortHigh(int **input, int *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
-  printf("Here in sort\n");
+  //printf("Here in sort\n");
   //__m256i output[length * 10];
   int numSets = 10; // Must change for loop too
   int numToMove = (8 * numSets * length)-1;
   int numMoved = 0;
   int insertIndex = 7;
-  printVec();
-  printf("making litss\n");
+  //printVec();
+  //printf("making litss\n");
   __m256i data[numSets*length];
   int r;
-  printf("made lists %ld\n", sizeof(data));
+  //printf("made lists %ld\n", sizeof(data));
   int c;
   for (r = 0; r < numSets; r++) {
     //__m256i *tempV = (__m256i*)calloc(length, sizeof(__m256i));
     for (c = 0; c < length; c++) {
       int end = c*8;
-      printf("here %i %i\n", r, c);
+      //printf("here %i %i\n", r, c);
       data[r*length+c] = _mm256_setr_epi32(input[r][end],input[r][end+1],input[r][end+2],input[r][end+3],input[r][end+4],input[r][end+5],input[r][end+6],input[r][end+7]);
-      printf("here too %i %i\n", r, c);
-      printf("ok %i %i\n", r, c);
+      //printf("here too %i %i\n", r, c);
+      //printf("ok %i %i\n", r, c);
     }
   }
   while (numToMove >= 0) {
@@ -207,7 +203,7 @@ void simpleColumnSortHigh(int **input, int *output, int length) {
     // Items are now sorted with highest on top
     // Take 1
     int maxValue = _mm256_extract_epi32(data[length-1], 7);
-    printf("maxValue %i ", maxValue);
+    //printf("maxValue %i \n", maxValue);
     output[numToMove] = maxValue;
     //output[numToMove / 8] = _mm256_insert_epi32(output[numToMove / 8], maxValue, insertIndex);
     numMoved++;
@@ -226,67 +222,68 @@ void simpleColumnSortHigh(int **input, int *output, int length) {
       // now shift input[0][i]
       data[i] = _mm256_insert_epi32(_mm256_slli_si256(data[i], 4), _mm256_extract_epi32(data[i], 3), 4);
     }
-    
-    if ((numMoved % (numSets * 8)) == 0) {
-      //length--;
+    /*if ((numMoved % (numSets * 8)) == 0) {
+      length--;
       // We want to not sort lists when they are empty
       // but we don't do this if we are using the double sided approach
       // Other idea is to resort only when input[0][0][7] < input[0][1][7]
       // but we'd have to sort 2+ times and not take more than recent sorts 
+    }*/
+  }
+  //printf("Done sort\n");
+}
+
+// Derrived from http://en.cppreference.com/w/c/algorithm/qsort
+int comparator(const void* a, const void* b) {
+    int arg1 = *(const int*)a;
+    int arg2 = *(const int*)b;
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return 1;
+    return 0;
+}
+
+void combineArrays(int **input, int *output) {
+  int numSets = 10;
+  int totalLength = currentLength*8;
+  int i;
+  int j;
+  for (i = 0; i < numSets; i++) {
+    for (j = 0; j < totalLength; j++) {
+      output[i*totalLength+j] = input[i][j];
     }
   }
-  printf("Done sort\n");
+  totalLength = numSets*totalLength;
+  qsort(output, totalLength, sizeof(int), comparator);
 }
 
 int main() {
+  /*struct timeval tv;
+  gettimeofday(&tv,NULL);
+  unsigned long startTime = tv.tv_nsec;//1000000 * tv.tv_sec + tv.tv_usec;
+  gettimeofday(&tv,NULL);
+  unsigned long endTime = tv.tv_nsec;//1000000 * tv.tv_sec + tv.tv_usec;*/
+  /*struct timespec tstart={0,0}, tend={0,0};
+  clock_gettime(CLOCK_MONOTONIC, &tstart);
+  unsigned long start = 1000000000*tstart.tv_sec + 1000*tstart.tv_usec + tstart.tv_nsec;
+  clock_gettime(CLOCK_MONOTONIC, &tend);
+  printf("%ld\n", tend.tv_nsec-tstart.tv_nsec);*/
   srand(time(NULL));   // should only be called once
   //initializeSocket();
   currentRow = 0;
   currentLength = 1;
   int *vecLists[10];
   allData = vecLists;
-  /*printf("2\n");
-  __m256i newV[1];
-  printf("3\n");
-  newV[0] = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);*/
-  printf("vecList1s %p %p\n", vecLists, vecLists[0]);
-  printf("allData %p %p\n", allData, allData[0]);
+  /*newV[0] = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);*/
+  //printf("vecList1s %p %p\n", vecLists, vecLists[0]);
+  //printf("allData %p %p\n", allData, allData[0]);
   //malloc(sizeof(__m256i*)*10);
   //printf("%ld\n", sizeof(__m256i*));
   int i;
-  for (i = 0; i < 10; i++) {
-    printf("%i\n", i);
+  for (i = 0; i < 100; i++) {
+    //printf("%i\n", i);
     createDatabase();
-    /*int j;
-    for (j = 0; j < i; j++) {
-      printf("current %i\n", currentRow);
-      int x = (int)_mm256_extract_epi32(allData[j][0],0);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],1);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],2);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],3);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],4);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],5);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],6);
-      printf("%i ", x);
-      x = (int)_mm256_extract_epi32(allData[j][0],7);
-      printf("%i\n", x);
-    }*/
+    printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
   }
-  /*
-  bzero(buffer,128);
-  snprintf(buffer, sizeof buffer, "2456get");
-  if (buffer[0] == 'g') {
-    buffer[0] = ' ';
-  }
-  long returnedLong = strtol(buffer, &stopstring, 10);
-  printf("%ld %s\n",returnedLong, stopstring);
-  */
   if (0) {
     __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
     __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);

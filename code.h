@@ -21,5 +21,7 @@ int getValue(int *list, int value);
 void simpleColumnSortHigh(int **input, int *output, int length);
 int main();
 void printVec();
+int comparator(const void* a, const void* b);
+void combineArrays(int **input, int *output);
 
 #endif // CODE_H_
