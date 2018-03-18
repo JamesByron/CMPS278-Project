@@ -9,6 +9,7 @@ char *stopstring;
 int **allData;
 int currentRow;
 int currentLength;
+int numSets;
 
 void initializeSocket();
 void sendOneValue(int value);

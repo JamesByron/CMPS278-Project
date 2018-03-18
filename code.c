@@ -69,10 +69,10 @@ void insertOneInteger(int *list, int value) {
 
 void storeValues() {
   //printf("Store values\n");
-  if (currentRow == 10) {
+  if (currentRow == numSets) {
     struct timeval tv;
-    //printf("here 10!\n");
-    int newLength = currentLength * 10;
+    //printf("here %i!\n", numSets);
+    int newLength = currentLength * numSets;
     int *newVec = (int*)calloc(newLength*8, sizeof(int));
     //printf("Pointer %ld\n", sizeof(newVec));
     gettimeofday(&tv,NULL);
@@ -85,7 +85,7 @@ void storeValues() {
     printf("SortTime %lu\n", endTime-startTime);
     printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
     int i;
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < numSets; i++) {
       free(allData[i]);
     }
     //printf("freed data\n");
@@ -99,9 +99,12 @@ void getDataFromClient() {
   //printf("Here in getDataFromClient\n");
   int totalLength = currentLength * 8;
   int *list = (int*)calloc(totalLength, sizeof(int));
-  int i = 0;
+  int i = 1;
+  int newValue = rand();
+  int div = 2;
+  list[0] = nuwValue;
   while (i < totalLength) {
-    int newValue = rand();
+    
     //printf("%i, ", newValue);
     int gets = 0;
     //int newValue = getOneValue(&gets);
@@ -111,7 +114,15 @@ void getDataFromClient() {
       sendOneValue(found);
     }
     else {
-      insertOneInteger(list, newValue);
+      int temp = newValue++/div++;
+      if ((temp < 2) || (temp > list[i-1])) {
+      	newValue = rand();
+      	div = 1;
+      	insertOneInteger(list, newValue);
+      }
+      else {
+      	list[i] = temp;
+      }
       i++;
     }
   }
@@ -169,8 +180,7 @@ void simpleColumnSortHigh(int **input, int *output, int length) {
   // input[numSets][length][8]
   //int* f = (int*)&result[0];
   //printf("Here in sort\n");
-  //__m256i output[length * 10];
-  int numSets = 10; // Must change for loop too
+  //int numSets = 10; // Must change for loop too
   int numToMove = (8 * numSets * length)-1;
   int numMoved = 0;
   int insertIndex = 7;
@@ -244,7 +254,7 @@ int comparator(const void* a, const void* b) {
 }
 
 void combineArrays(int **input, int *output) {
-  int numSets = 10;
+  //int numSets = 10;
   int totalLength = currentLength*8;
   int i;
   int j;
@@ -261,15 +271,11 @@ int main() {
   unsigned long st = time(NULL);
   srand(time(NULL));   // should only be called once
   //initializeSocket();
+  numSets = 10;
   currentRow = 0;
   currentLength = 1;
-  int *vecLists[10];
+  int *vecLists[numSets];
   allData = vecLists;
-  /*newV[0] = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);*/
-  //printf("vecList1s %p %p\n", vecLists, vecLists[0]);
-  //printf("allData %p %p\n", allData, allData[0]);
-  //malloc(sizeof(__m256i*)*10);
-  //printf("%ld\n", sizeof(__m256i*));
   int i;
   for (i = 0; i < 50; i++) {
     createDatabase();
@@ -278,67 +284,14 @@ int main() {
     //printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
   }
   printf("\n\n");
-  if (0) {
-    __m256i v0 = _mm256_setr_epi32(2, 4, 6, 8, 10, 12, 14, 16);
-    __m256i v1 = _mm256_setr_epi32(1, 3, 5, 7, 9, 11, 13, 15);
-    __m256i v2 = _mm256_setr_epi32(20,26,30,33,34,38,60,65);
-    __m256i v3 = _mm256_setr_epi32(15,19,28,31,64,66,67,68);
-    __m256i v4 = _mm256_setr_epi32(1,3,4,7,21,22,25,30);
-    char t = v0[0] > v1[0];
-    //__m256i *bar = malloc(1 * sizeof __m256i);
-    int length = 1;
-    int vecs = 5;
-    int newLength = length * 10;
-    __m256i allTen[5][length];
-    allTen[0][0] = v0;
-    allTen[1][0] = v1;
-    allTen[2][0] = v2;
-    allTen[3][0] = v3;
-    allTen[4][0] = v4;
-    /* Compute the difference between the two vectors */
-    //__m256i result = _mm256_sub_epi32(evens, odds);
-     __m256i result = _mm256_max_epi32(v1,v3);
-    __m256i result2 = _mm256_max_epi32(v1,v3);
-    int* f = (int*)&result;
-    printf("%i %i %i %i %i %i %i %i\n",
-      f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
-    //int shift = _mm256_extract_epi32(result, 3);
-    //int storeMe = _mm256_extract_epi32(result, 7);
-    result = _mm256_insert_epi32(_mm256_slli_si256(result, 4), 100, 4);
-    //int* f = (int*)&result;
-    //f = (int*)&result;
-    //int* h = (int*)g;
-    //printf("mod %i\n",239%8);
-    //printf("v0[7] %i\n",((int*)&v0)[7]);
-    //struct AVXVec *newStruct = malloc(sizeof(struct AVXVec));
-    printf("size __m256i %lu\n",sizeof(__m256i[10][10]));
-    //printf("size _AVXVec %lu\n",sizeof(*newStruct));
-    printf("size v4 %lu\n",sizeof(v4));
-    //printf("size allTen %lu\n",sizeof(allTen));
-    printf("%i %i %i %i %i %i %i %i\n",f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7]);
-  }
+  //int* f = (int*)&result;
   return 0;
 }
-// int
-// __m256i _mm256_min_epi32 (__m256i a, __m256i b)
-// _mm256_max_epi32 get maximum values
-// _mm256_min_epi32 get min
-//  _mm256_set_epi32
-//__m256i _mm256_mask_set1_epi32 (__m256i src, __mmask8 k, int a)
-
-// sort2, pop, shift, sort1, pop, sort2
 
 //_mm256_movemask_epi8 : get an int with bits set by the first of each 32 bit value
 //_mm256_cmpgt_epi32 : compare values, setting result to 1 if true 
 //_mm256_blendv_epi8
-//https://software.intel.com/sites/landingpage/IntrinsicsGuide/#techs=AVX2&expand=408,742,750,3316,3610,5113,5154
-
-//__int32 _mm256_extract_epi32 (__m256i a, const int index)
-//__m256i _mm256_insert_epi32 (__m256i a, __int32 i, const int index)
-
-// _mm256_slli_epi32 shift left 32 bit IntrinsicsGuide
-// _mm256_srli_epi32 shift right, zeros
-
+//https://software.intel.com/sites/landingpage/IntrinsicsGuide/#techs=AVX2&expand=408,742,750,3316,36,5113,5154
 //__m256i _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
 //__m256i _mm256_load_si256 (__m256i const * mem_addr)
 
