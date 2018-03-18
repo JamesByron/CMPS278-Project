@@ -272,10 +272,9 @@ int main() {
   //printf("%ld\n", sizeof(__m256i*));
   int i;
   for (i = 0; i < 50; i++) {
-    printf("%i ", i);
     createDatabase();
     unsigned long et = time(NULL);
-    printf("Total time: %lu seconds\n", et-st);
+    printf("%i Total time: %lu seconds\n", i, et-st);
     //printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
   }
   printf("\n\n");
