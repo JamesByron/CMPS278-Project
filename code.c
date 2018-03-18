@@ -280,7 +280,7 @@ int main(int argc, char *argv[]) {
   if (argc > 2) {
   	numCycles = atoi(argv[2]);
   }
-  printf("numSets: %i, numCycles: %i", numSets, nuwCycles);
+  printf("numSets: %i, numCycles: %i", numSets, numCycles);
   currentRow = 0;
   currentLength = 1;
   int *vecLists[numSets];
