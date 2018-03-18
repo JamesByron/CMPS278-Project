@@ -1,0 +1,50 @@
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 76
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 254
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 2974
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 28124
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+

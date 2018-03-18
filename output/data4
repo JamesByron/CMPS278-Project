@@ -1,0 +1,45 @@
+Using SIMD sort
+numSets: 4, numCycles: 25
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+ SortTime 6
+ r 4, c 1, = 32
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+ SortTime 72
+ r 4, c 4, = 128
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 1101
+ r 4, c 16, = 512
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+ SortTime 13325
+ r 4, c 64, = 2048
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 92280
+ r 4, c 256, = 8192
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 1520082
+ r 4, c 1024, = 32768
+18 Total time: 2 seconds
+19 Total time: 2 seconds
+20 Total time: 2 seconds
+ SortTime 24704863
+ r 4, c 4096, = 131072
+21 Total time: 27 seconds
+22 Total time: 27 seconds
+23 Total time: 27 seconds
+ SortTime 398142778
+ r 4, c 16384, = 524288
+24 Total time: 425 seconds
+
+

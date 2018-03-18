@@ -1,0 +1,48 @@
+Using qsort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 16
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 173
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 282
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 1771
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 10498
+ r 6, c 1296, = 62208
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+ SortTime 29103
+ r 6, c 7776, = 373248
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+
+

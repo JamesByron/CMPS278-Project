@@ -1,0 +1,50 @@
+Using SIMD sort
+numSets: 2, numCycles: 16
+0 Total time: 0 seconds
+ SortTime 1
+ r 2, c 1, = 16
+1 Total time: 0 seconds
+ SortTime 2
+ r 2, c 2, = 32
+2 Total time: 0 seconds
+ SortTime 6
+ r 2, c 4, = 64
+3 Total time: 0 seconds
+ SortTime 22
+ r 2, c 8, = 128
+4 Total time: 0 seconds
+ SortTime 88
+ r 2, c 16, = 256
+5 Total time: 0 seconds
+ SortTime 357
+ r 2, c 32, = 512
+6 Total time: 0 seconds
+ SortTime 1540
+ r 2, c 64, = 1024
+7 Total time: 0 seconds
+ SortTime 5795
+ r 2, c 128, = 2048
+8 Total time: 0 seconds
+ SortTime 23732
+ r 2, c 256, = 4096
+9 Total time: 0 seconds
+ SortTime 91599
+ r 2, c 512, = 8192
+10 Total time: 0 seconds
+ SortTime 368569
+ r 2, c 1024, = 16384
+11 Total time: 1 seconds
+ SortTime 1474264
+ r 2, c 2048, = 32768
+12 Total time: 2 seconds
+ SortTime 5931473
+ r 2, c 4096, = 65536
+13 Total time: 8 seconds
+ SortTime 23791127
+ r 2, c 8192, = 131072
+14 Total time: 32 seconds
+ SortTime 95257012
+ r 2, c 16384, = 262144
+15 Total time: 127 seconds
+
+
