@@ -31,7 +31,10 @@ void printer() {
 	current++;
 }
 
-void main() {
+void main(int argc, char *argv[]) {
+	printf("%i\n", argc);
+	printf("%i\n", atoi(argv[1]));
+	exit(0);
 	int *vecLists[10];
 	data = vecLists;
 	current = 0;

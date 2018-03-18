@@ -78,8 +78,8 @@ void storeValues() {
     gettimeofday(&tv,NULL);
     unsigned long startTime = 1000000 * tv.tv_sec + tv.tv_usec;
     // sort and merge
-    simpleColumnSortHigh(allData, newVec, currentLength);
-    //combineArrays(allData, newVec);
+    //simpleColumnSortHigh(allData, newVec, currentLength);
+    combineArrays(allData, newVec);
     gettimeofday(&tv,NULL);
     unsigned long endTime = 1000000 * tv.tv_sec + tv.tv_usec;
     printf("SortTime %lu\n", endTime-startTime);
@@ -268,17 +268,25 @@ void combineArrays(int **input, int *output) {
   qsort(output, totalLength, sizeof(int), comparator);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   unsigned long st = time(NULL);
   srand(time(NULL));   // should only be called once
   //initializeSocket();
   numSets = 10;
+  int numCycles = 50;
+  if (argc > 1) {
+  	numSets = atoi(argv[1]);
+  }
+  if (argc > 2) {
+  	numCycles = atoi(argv[2]);
+  }
+  printf("numSets: %i, numCycles: %i", numSets, nuwCycles);
   currentRow = 0;
   currentLength = 1;
   int *vecLists[numSets];
   allData = vecLists;
   int i;
-  for (i = 0; i < 50; i++) {
+  for (i = 0; i < numCycles; i++) {
     createDatabase();
     unsigned long et = time(NULL);
     printf("%i Total time: %lu seconds\n", i, et-st);
