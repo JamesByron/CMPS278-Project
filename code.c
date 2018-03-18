@@ -78,8 +78,12 @@ void storeValues() {
     gettimeofday(&tv,NULL);
     unsigned long startTime = 1000000 * tv.tv_sec + tv.tv_usec;
     // sort and merge
-    //simpleColumnSortHigh(allData, newVec, currentLength);
-    combineArrays(allData, newVec);
+    if (useColumnSort) {
+      simpleColumnSortHigh(allData, newVec, currentLength);
+    }
+    else {
+      combineArrays(allData, newVec);
+    }
     gettimeofday(&tv,NULL);
     unsigned long endTime = 1000000 * tv.tv_sec + tv.tv_usec;
     printf(" SortTime %lu\n", endTime-startTime);
@@ -279,6 +283,15 @@ int main(int argc, char *argv[]) {
   }
   if (argc > 2) {
   	numCycles = atoi(argv[2]);
+  }
+  if (argc > 3) {
+    useColumnSort = atoi(argv[3]);
+  }
+  if (useColumnSort) {
+    printf("Using SIMD sort\n");
+  }
+  else {
+    printf("Using qsort\n");
   }
   printf("numSets: %i, numCycles: %i\n", numSets, numCycles);
   currentRow = 0;

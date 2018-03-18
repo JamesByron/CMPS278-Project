@@ -10,6 +10,7 @@ int **allData;
 int currentRow;
 int currentLength;
 int numSets;
+int useColumnSort;
 
 void initializeSocket();
 void sendOneValue(int value);
