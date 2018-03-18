@@ -99,12 +99,11 @@ void getDataFromClient() {
   //printf("Here in getDataFromClient\n");
   int totalLength = currentLength * 8;
   int *list = (int*)calloc(totalLength, sizeof(int));
-  int i = 1;
+  int i = totalLength-2;
   int newValue = rand();
   int div = 2;
-  list[0] = nuwValue;
-  while (i < totalLength) {
-    
+  list[totalLength-1] = nuwValue++;
+  while (i >= 0) {
     //printf("%i, ", newValue);
     int gets = 0;
     //int newValue = getOneValue(&gets);
@@ -115,7 +114,7 @@ void getDataFromClient() {
     }
     else {
       int temp = newValue++/div++;
-      if ((temp < 2) || (temp > list[i-1])) {
+      if ((temp < 2) || (temp > list[i+1])) {
       	newValue = rand();
       	div = 1;
       	insertOneInteger(list, newValue);
@@ -123,13 +122,12 @@ void getDataFromClient() {
       else {
       	list[i] = temp;
       }
-      i++;
+      i--;
     }
   }
   allData[currentRow] = list;
   currentRow++;
   storeValues();
-  //printf("\nend\n");
   //printVec();
 }
 
