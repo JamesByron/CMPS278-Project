@@ -276,6 +276,7 @@ int main(int argc, char *argv[]) {
   unsigned long st = time(NULL);
   srand(time(NULL));   // should only be called once
   //initializeSocket();
+  useColumnSort = 1;
   numSets = 10;
   int numCycles = 50;
   if (argc > 1) {
