@@ -62,3 +62,323 @@ numSets: 10, numCycles: 50
 49 Total time: 839 seconds
 
 
+Using SIMD sort
+numSets: 10, numCycles: 50
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 10
+ r 10, c 1, = 80
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 932
+ r 10, c 10, = 800
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+ SortTime 79297
+ r 10, c 100, = 8000
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+35 Total time: 0 seconds
+ SortTime 8042049
+ r 10, c 1000, = 80000
+36 Total time: 8 seconds
+37 Total time: 8 seconds
+38 Total time: 8 seconds
+39 Total time: 8 seconds
+40 Total time: 8 seconds
+41 Total time: 8 seconds
+42 Total time: 8 seconds
+43 Total time: 8 seconds
+44 Total time: 8 seconds
+ SortTime 833693879
+ r 10, c 10000, = 800000
+45 Total time: 841 seconds
+46 Total time: 841 seconds
+47 Total time: 841 seconds
+48 Total time: 841 seconds
+49 Total time: 841 seconds
+
+
+Using SIMD sort
+numSets: 10, numCycles: 50
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 8
+ r 10, c 1, = 80
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 769
+ r 10, c 10, = 800
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+ SortTime 80163
+ r 10, c 100, = 8000
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+35 Total time: 0 seconds
+ SortTime 8068697
+ r 10, c 1000, = 80000
+36 Total time: 8 seconds
+37 Total time: 8 seconds
+38 Total time: 8 seconds
+39 Total time: 8 seconds
+40 Total time: 8 seconds
+41 Total time: 8 seconds
+42 Total time: 8 seconds
+43 Total time: 8 seconds
+44 Total time: 8 seconds
+ SortTime 828285330
+ r 10, c 10000, = 800000
+45 Total time: 836 seconds
+46 Total time: 836 seconds
+47 Total time: 836 seconds
+48 Total time: 836 seconds
+49 Total time: 836 seconds
+
+
+Using SIMD sort
+numSets: 10, numCycles: 50
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 11
+ r 10, c 1, = 80
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 951
+ r 10, c 10, = 800
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+ SortTime 82337
+ r 10, c 100, = 8000
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+35 Total time: 0 seconds
+ SortTime 8095271
+ r 10, c 1000, = 80000
+36 Total time: 9 seconds
+37 Total time: 9 seconds
+38 Total time: 9 seconds
+39 Total time: 9 seconds
+40 Total time: 9 seconds
+41 Total time: 9 seconds
+42 Total time: 9 seconds
+43 Total time: 9 seconds
+44 Total time: 9 seconds
+ SortTime 841753583
+ r 10, c 10000, = 800000
+45 Total time: 850 seconds
+46 Total time: 850 seconds
+47 Total time: 850 seconds
+48 Total time: 850 seconds
+49 Total time: 850 seconds
+
+
+Using SIMD sort
+numSets: 10, numCycles: 50
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 9
+ r 10, c 1, = 80
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 768
+ r 10, c 10, = 800
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+ SortTime 78928
+ r 10, c 100, = 8000
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+35 Total time: 0 seconds
+ SortTime 8000360
+ r 10, c 1000, = 80000
+36 Total time: 8 seconds
+37 Total time: 8 seconds
+38 Total time: 8 seconds
+39 Total time: 8 seconds
+40 Total time: 8 seconds
+41 Total time: 8 seconds
+42 Total time: 8 seconds
+43 Total time: 8 seconds
+44 Total time: 8 seconds
+ SortTime 825123745
+ r 10, c 10000, = 800000
+45 Total time: 833 seconds
+46 Total time: 833 seconds
+47 Total time: 833 seconds
+48 Total time: 833 seconds
+49 Total time: 833 seconds
+
+
+Using SIMD sort
+numSets: 10, numCycles: 50
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+ SortTime 9
+ r 10, c 1, = 80
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+ SortTime 848
+ r 10, c 10, = 800
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+ SortTime 79496
+ r 10, c 100, = 8000
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+35 Total time: 0 seconds
+ SortTime 8016268
+ r 10, c 1000, = 80000
+36 Total time: 8 seconds
+37 Total time: 8 seconds
+38 Total time: 8 seconds
+39 Total time: 8 seconds
+40 Total time: 8 seconds
+41 Total time: 8 seconds
+42 Total time: 8 seconds
+43 Total time: 8 seconds
+44 Total time: 8 seconds
+ SortTime 840337796
+ r 10, c 10000, = 800000
+45 Total time: 849 seconds
+46 Total time: 849 seconds
+47 Total time: 849 seconds
+48 Total time: 849 seconds
+49 Total time: 849 seconds
+
+

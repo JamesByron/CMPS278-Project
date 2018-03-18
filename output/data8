@@ -48,3 +48,253 @@ numSets: 8, numCycles: 36
 35 Total time: 109 seconds
 
 
+Using SIMD sort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 348
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 21988
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 1557158
+ r 8, c 512, = 32768
+28 Total time: 1 seconds
+29 Total time: 1 seconds
+30 Total time: 1 seconds
+31 Total time: 1 seconds
+32 Total time: 1 seconds
+33 Total time: 1 seconds
+34 Total time: 1 seconds
+ SortTime 107297829
+ r 8, c 4096, = 262144
+35 Total time: 108 seconds
+
+
+Using SIMD sort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 402
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 23050
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 1560245
+ r 8, c 512, = 32768
+28 Total time: 2 seconds
+29 Total time: 2 seconds
+30 Total time: 2 seconds
+31 Total time: 2 seconds
+32 Total time: 2 seconds
+33 Total time: 2 seconds
+34 Total time: 2 seconds
+ SortTime 106804917
+ r 8, c 4096, = 262144
+35 Total time: 108 seconds
+
+
+Using SIMD sort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 342
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 22224
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 1561847
+ r 8, c 512, = 32768
+28 Total time: 1 seconds
+29 Total time: 1 seconds
+30 Total time: 1 seconds
+31 Total time: 1 seconds
+32 Total time: 1 seconds
+33 Total time: 1 seconds
+34 Total time: 1 seconds
+ SortTime 106838564
+ r 8, c 4096, = 262144
+35 Total time: 108 seconds
+
+
+Using SIMD sort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 318
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 23793
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 1571675
+ r 8, c 512, = 32768
+28 Total time: 2 seconds
+29 Total time: 2 seconds
+30 Total time: 2 seconds
+31 Total time: 2 seconds
+32 Total time: 2 seconds
+33 Total time: 2 seconds
+34 Total time: 2 seconds
+ SortTime 106872505
+ r 8, c 4096, = 262144
+35 Total time: 108 seconds
+
+
+Using SIMD sort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 6
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 342
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 22195
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 1547557
+ r 8, c 512, = 32768
+28 Total time: 1 seconds
+29 Total time: 1 seconds
+30 Total time: 1 seconds
+31 Total time: 1 seconds
+32 Total time: 1 seconds
+33 Total time: 1 seconds
+34 Total time: 1 seconds
+ SortTime 106636178
+ r 8, c 4096, = 262144
+35 Total time: 108 seconds
+
+

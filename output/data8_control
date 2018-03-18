@@ -48,3 +48,253 @@ numSets: 8, numCycles: 36
 35 Total time: 0 seconds
 
 
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 17
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 202
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 749
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 4552
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 18845
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 8
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 100
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 352
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 2953
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 19611
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 7
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 95
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 311
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 2824
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 18787
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 17
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 196
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 680
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 3382
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 18578
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+
+Using qsort
+numSets: 8, numCycles: 36
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+ SortTime 7
+ r 8, c 1, = 64
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+ SortTime 82
+ r 8, c 8, = 512
+14 Total time: 0 seconds
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+20 Total time: 0 seconds
+ SortTime 279
+ r 8, c 64, = 4096
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+ SortTime 2466
+ r 8, c 512, = 32768
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 19195
+ r 8, c 4096, = 262144
+35 Total time: 0 seconds
+
+

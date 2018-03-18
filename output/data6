@@ -46,3 +46,243 @@ numSets: 6, numCycles: 32
 31 Total time: 186 seconds
 
 
+Using SIMD sort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 11
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 416
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 12118
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 141470
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 4950190
+ r 6, c 1296, = 62208
+25 Total time: 5 seconds
+26 Total time: 5 seconds
+27 Total time: 5 seconds
+28 Total time: 5 seconds
+29 Total time: 5 seconds
+ SortTime 180390561
+ r 6, c 7776, = 373248
+30 Total time: 186 seconds
+31 Total time: 186 seconds
+
+
+Using SIMD sort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 12
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 352
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 12647
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 144106
+ r 6, c 216, = 10368
+20 Total time: 1 seconds
+21 Total time: 1 seconds
+22 Total time: 1 seconds
+23 Total time: 1 seconds
+24 Total time: 1 seconds
+ SortTime 5114721
+ r 6, c 1296, = 62208
+25 Total time: 6 seconds
+26 Total time: 6 seconds
+27 Total time: 6 seconds
+28 Total time: 6 seconds
+29 Total time: 6 seconds
+ SortTime 186381260
+ r 6, c 7776, = 373248
+30 Total time: 192 seconds
+31 Total time: 192 seconds
+
+
+Using SIMD sort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 9
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 274
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 12342
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 141590
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 4953769
+ r 6, c 1296, = 62208
+25 Total time: 5 seconds
+26 Total time: 5 seconds
+27 Total time: 5 seconds
+28 Total time: 5 seconds
+29 Total time: 5 seconds
+ SortTime 181709069
+ r 6, c 7776, = 373248
+30 Total time: 187 seconds
+31 Total time: 187 seconds
+
+
+Using SIMD sort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 4
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 125
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 3859
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 135747
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 4967118
+ r 6, c 1296, = 62208
+25 Total time: 5 seconds
+26 Total time: 5 seconds
+27 Total time: 5 seconds
+28 Total time: 5 seconds
+29 Total time: 5 seconds
+ SortTime 181144661
+ r 6, c 7776, = 373248
+30 Total time: 186 seconds
+31 Total time: 186 seconds
+
+
+Using SIMD sort
+numSets: 6, numCycles: 32
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 6
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 152
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 6011
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 140920
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 4967782
+ r 6, c 1296, = 62208
+25 Total time: 5 seconds
+26 Total time: 5 seconds
+27 Total time: 5 seconds
+28 Total time: 5 seconds
+29 Total time: 5 seconds
+ SortTime 181863223
+ r 6, c 7776, = 373248
+30 Total time: 187 seconds
+31 Total time: 187 seconds
+
+
