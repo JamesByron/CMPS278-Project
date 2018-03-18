@@ -1,56 +1,42 @@
-PACKAGE=acmart
+#
+# Basic LaTeX makefile
+#
+# Default target: PDF version of the paper
+# make clean: removes "temporary" files
+# make spotless: clean + removes the default target, forcing rebuild
+#
 
-SAMPLES = Byron-Paper.tex
+# This is your "main" LaTeX file, without the ".tex"
+PAPER      = sample
 
-PDF = ${SAMPLES:%.tex=%.pdf}
+# Put other LaTeX sources here (excluding the "main" LaTeX file)
+TEXSRCS    =
 
-all:  ${PDF}
+# Put the list of bibliography files here
+BIBS       = sample.bib
 
-%.pdf:  %.dtx   $(PACKAGE).cls
-	pdflatex $<
-	- bibtex $*
-	pdflatex $<
-	- makeindex -s gind.ist -o $*.ind $*.idx
-	- makeindex -s gglo.ist -o $*.gls $*.glo
-	pdflatex $<
-	while ( grep -q '^LaTeX Warning: Label(s) may have changed' $*.log) \
-	do pdflatex $<; done
+# This is the name of the automatic LaTeX make program.
+LATEXMK    = latexmk
 
-%.cls:   %.ins %.dtx
-	pdflatex $<
+# This needs to be the first target so that it's the one made if you just type make
+default: pdf
 
-%.pdf:  %.tex   $(PACKAGE).cls ACM-Reference-Format.bst
-	pdflatex $<
-	- bibtex $*
-	pdflatex $<
-	pdflatex $<
-	while ( grep -q '^LaTeX Warning: Label(s) may have changed' $*.log) \
-	do pdflatex $<; done
+# Additional dependencies (figures, graphs, etc.) can go below this line
 
-Byron-Paper.pdf: Byron-Paper.tex
+#----------------------------------------------------------------------
+# Shouldn't need to edit below this line
+#----------------------------------------------------------------------
+.SUFFIXES:	.pdf .ps .dvi .tex .eps
 
+pdf: $(PAPER).pdf
 
-.PRECIOUS:  $(PACKAGE).cfg $(PACKAGE).cls
+$(PAPER).pdf: $(TEXSRCS) $(BIBS)
 
+%.pdf: %.tex
+	$(LATEXMK) -pdf $<
 
 clean:
-	$(RM)  $(PACKAGE).cls *.log *.aux \
-	*.cfg *.glo *.idx *.toc \
-	*.ilg *.ind *.out *.lof \
-	*.lot *.bbl *.blg *.gls *.cut *.hd \
-	*.dvi *.ps *.thm *.tgz *.zip *.rpi
+	$(RM) *.aux *.bbl *.blg *.dvi *.log *.out *.fdb_latexmk *.fls *~
 
-distclean: clean
-	$(RM) $(PDF) *-converted-to.pdf
-
-#
-# Archive for the distribution. Includes typeset documentation
-#
-archive:  all clean
-	COPYFILE_DISABLE=1 tar -C .. -czvf ../$(PACKAGE).tgz --exclude '*~' --exclude '*.tgz' --exclude '*.zip'  --exclude CVS --exclude '.git*' $(PACKAGE); mv ../$(PACKAGE).tgz .
-
-zip:  all clean
-	zip -r  $(PACKAGE).zip * -x '*~' -x '*.tgz' -x '*.zip' -x CVS -x 'CVS/*'
-
-documents.zip: all
-	zip $@ acmart.pdf acmguide.pdf sample-*.pdf *.cls
+spotless: clean
+	$(RM) $(PAPER).pdf
