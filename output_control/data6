@@ -1,0 +1,57 @@
+numSets: 6, numCycles: 40
+0 Total time: 0 seconds
+1 Total time: 0 seconds
+2 Total time: 0 seconds
+3 Total time: 0 seconds
+4 Total time: 0 seconds
+ SortTime 6
+ r 6, c 1, = 48
+5 Total time: 0 seconds
+6 Total time: 0 seconds
+7 Total time: 0 seconds
+8 Total time: 0 seconds
+9 Total time: 0 seconds
+ SortTime 84
+ r 6, c 6, = 288
+10 Total time: 0 seconds
+11 Total time: 0 seconds
+12 Total time: 0 seconds
+13 Total time: 0 seconds
+14 Total time: 0 seconds
+ SortTime 161
+ r 6, c 36, = 1728
+15 Total time: 0 seconds
+16 Total time: 0 seconds
+17 Total time: 0 seconds
+18 Total time: 0 seconds
+19 Total time: 0 seconds
+ SortTime 644
+ r 6, c 216, = 10368
+20 Total time: 0 seconds
+21 Total time: 0 seconds
+22 Total time: 0 seconds
+23 Total time: 0 seconds
+24 Total time: 0 seconds
+ SortTime 3558
+ r 6, c 1296, = 62208
+25 Total time: 0 seconds
+26 Total time: 0 seconds
+27 Total time: 0 seconds
+28 Total time: 0 seconds
+29 Total time: 0 seconds
+ SortTime 24761
+ r 6, c 7776, = 373248
+30 Total time: 0 seconds
+31 Total time: 0 seconds
+32 Total time: 0 seconds
+33 Total time: 0 seconds
+34 Total time: 0 seconds
+ SortTime 151464
+ r 6, c 46656, = 2239488
+35 Total time: 0 seconds
+36 Total time: 0 seconds
+37 Total time: 0 seconds
+38 Total time: 0 seconds
+39 Total time: 0 seconds
+
+
