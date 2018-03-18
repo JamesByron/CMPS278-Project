@@ -101,6 +101,9 @@ void getDataFromClient() {
   int *list = (int*)calloc(totalLength, sizeof(int));
   int i = totalLength-2;
   int newValue = rand();
+  while (newValue < RAND_MAX / 4) {
+  	newValue = rand();
+  }
   int div = 2;
   list[totalLength-1] = newValue++;
   while (i >= 0) {
