@@ -82,8 +82,8 @@ void storeValues() {
     combineArrays(allData, newVec);
     gettimeofday(&tv,NULL);
     unsigned long endTime = 1000000 * tv.tv_sec + tv.tv_usec;
-    printf("SortTime %lu\n", endTime-startTime);
-    printf("r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
+    printf(" SortTime %lu\n", endTime-startTime);
+    printf(" r %i, c %i, = %i\n", currentRow, currentLength, currentRow*currentLength*8);
     int i;
     for (i = 0; i < numSets; i++) {
       free(allData[i]);
@@ -280,7 +280,7 @@ int main(int argc, char *argv[]) {
   if (argc > 2) {
   	numCycles = atoi(argv[2]);
   }
-  printf("numSets: %i, numCycles: %i", numSets, numCycles);
+  printf("numSets: %i, numCycles: %i\n", numSets, numCycles);
   currentRow = 0;
   currentLength = 1;
   int *vecLists[numSets];
