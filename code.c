@@ -102,7 +102,7 @@ void getDataFromClient() {
   int i = totalLength-2;
   int newValue = rand();
   int div = 2;
-  list[totalLength-1] = nuwValue++;
+  list[totalLength-1] = newValue++;
   while (i >= 0) {
     //printf("%i, ", newValue);
     int gets = 0;
