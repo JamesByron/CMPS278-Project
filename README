@@ -10,3 +10,5 @@ To run the code:
 6) Type ./run.sh
 	This command executes a script that builds and runs the SIMD meerge code and the qsort code, creating separate log files for each in the output directory.
 	Execution takes about 20 minutes.
+7) Type ./charts.sh
+	This command creates png charts in the output folder and eps charts in the paper folder using the data from the experiments.
