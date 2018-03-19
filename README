@@ -1,0 +1,12 @@
+To run the code:
+
+1) Open a terminal window
+2) Pull the git repository
+3) Change to the CMPS278-Project directory
+4) Type: chmod +x run.sh
+	This command enables execution of the execution script that builds and runs the program.
+5) Type: mkdir output
+	This command creates a directory for the output files from the program
+6) Type ./run.sh
+	This command executes a script that builds and runs the SIMD meerge code and the qsort code, creating separate log files for each in the output directory.
+	Execution takes about 20 minutes.
